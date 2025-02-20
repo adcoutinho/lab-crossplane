@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: crossplane
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Project for Crossplane Lab
+  sourceRepos:
+  - ${URL_REPO}
+
+  destinations:
+  - namespace: crossplane-system
+    server: https://kubernetes.default.svc
+  #
+  # Deny all namespace-scoped resources from being created, except for Application
+  #
+  namespaceResourceWhitelist:
+  - group: 'argoproj.io'
+    kind: Application
+  
